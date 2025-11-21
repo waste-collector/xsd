@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="Administrator" type="Administrator"/>
+	<xs:complexType name="Administrator">
+		<xs:complexContent>
+			<xs:extension base="Employe">
+				<xs:sequence>
+					<xs:element name="functionAdmin" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="idAdmin" type="xs:int" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AnnuelObjectif" type="AnnuelObjectif"/>
+	<xs:complexType name="AnnuelObjectif">
+		<xs:sequence>
+			<xs:element name="descriptionObj" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="idObj" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="realisationRate" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="titleObjectif" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="yearObj" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="AnnuelReport" type="AnnuelReport" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="AnnuelReport" type="AnnuelReport"/>
+	<xs:complexType name="AnnuelReport">
+		<xs:sequence>
+			<xs:element name="totalCollectedWaste" type="xs:double" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="totalEmissionCO2" type="xs:double" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="totalRecyclingRate" type="xs:double" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="yearRp" type="xs:int" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Citizen" type="Citizen"/>
+	<xs:complexType name="Citizen">
+		<xs:complexContent>
+			<xs:extension base="User">
+				<xs:sequence>
+					<xs:element name="adressCit" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="City" type="City"/>
+	<xs:complexType name="City">
+		<xs:sequence>
+			<xs:element name="nameCity" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="nbZones" type="xs:int" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="CollectAgent" type="CollectAgent"/>
+	<xs:complexType name="CollectAgent">
+		<xs:complexContent>
+			<xs:extension base="Employe">
+				<xs:sequence>
+					<xs:element name="disponibility" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="roleAgent" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="IncidentReport" type="IncidentReport" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="TourReport" type="TourReport" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="CollectPoint" type="CollectPoint"/>
+	<xs:complexType name="CollectPoint">
+		<xs:sequence>
+			<xs:element name="adressCP" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="capacityCP" type="xs:double" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="fillLevel" type="xs:double" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="idCP" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="lastCollectDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="latitudeGPS" type="xs:double" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="longitudeGPS" type="xs:double" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="nameCP" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="priorityCP" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="wasteType" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="CollectTour" type="CollectTour"/>
+	<xs:complexType name="CollectTour">
+		<xs:sequence>
+			<xs:element name="CO2emissionTour" type="xs:double" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="collectedQuantityTour" type="xs:double" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="dateTour" type="xs:date" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="distanceTour" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="estimedTimeTour" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="idTour" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="statusTour" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="CollectAgent" type="CollectAgent" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="CollectPoint" type="CollectPoint" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Employe" type="Employe"/>
+	<xs:complexType name="Employe" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="User">
+				<xs:sequence>
+					<xs:element name="recruitmentDateEmp" type="xs:date" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="salaryEmp" type="xs:double" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="telEmp" type="xs:int" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="IncidentReport" type="IncidentReport"/>
+	<xs:complexType name="IncidentReport">
+		<xs:sequence>
+			<xs:element name="adressIR" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="dateIR" type="xs:date" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="descIR" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="idIR" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="stateIR" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="typeIR" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Citizen" type="Citizen" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="CollectPoint" type="CollectPoint" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="TourReport" type="TourReport"/>
+	<xs:complexType name="TourReport">
+		<xs:sequence>
+			<xs:element name="efficacityTour" type="xs:double" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="idTourReport" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="recyclingRate" type="xs:double" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="totalCollected" type="xs:double" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="totalEmission" type="xs:double" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="AnnuelReport" type="AnnuelReport" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="CollectTour" type="CollectTour" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="User" type="User"/>
+	<xs:complexType name="User" abstract="true">
+		<xs:sequence>
+			<xs:element name="emailU" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="idU" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="nameU" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="pwdU" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="role" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Vehicule" type="Vehicule"/>
+	<xs:complexType name="Vehicule">
+		<xs:sequence>
+			<xs:element name="capacityV" type="xs:double" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="dateLastMaintenance" type="xs:date" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="emissionCO2" type="xs:double" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="fuelLevelV" type="xs:double" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="immatV" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="stateV" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="typeFuelV" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="typeV" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="CollectTour" type="CollectTour" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Zone" type="Zone"/>
+	<xs:complexType name="Zone">
+		<xs:sequence>
+			<xs:element name="idZone" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="nameZone" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="nbCitizens" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="superficieZone" type="xs:double" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="City" type="City" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="CollectPoint" type="CollectPoint" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="WasteManagement">
+    		<xs:complexType>
+		        <xs:sequence>
+            			<xs:element name="Cities" type="City" maxOccurs="unbounded"/>
+            			<xs:element name="Zones" type="Zone" maxOccurs="unbounded"/>
+            			<xs:element name="CollectPoints" type="CollectPoint" maxOccurs="unbounded"/>
+            			<xs:element name="Citizens" type="Citizen" maxOccurs="unbounded"/>
+            			<xs:element name="Tours" type="CollectTour" maxOccurs="unbounded"/>
+            			<xs:element name="Employees" type="Employe" maxOccurs="unbounded"/>
+            			<xs:element name="Vehicles" type="Vehicule" maxOccurs="unbounded"/>
+        		</xs:sequence>
+    		</xs:complexType>
+	</xs:element>
+</xs:schema>
