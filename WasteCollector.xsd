@@ -6,12 +6,22 @@
 			<xs:extension base="Employe">
 				<xs:sequence>
 					<xs:element name="functionAdmin" type="xs:string" minOccurs="1" maxOccurs="1"/>
-					<xs:element name="idAdmin" type="xs:int" minOccurs="1" maxOccurs="1"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:element name="AnnuelObjectif" type="AnnuelObjectif"/>
+
+
+	<xs:element name="AnnuelObjectif" type="AnnuelObjectif">
+		<xs:key name="cle_obj">
+		<xs:selector xpath="AnnuelObjectif"/>
+		<xs:field xpath="@idObj"/>
+		</xs:key>
+		<xs:keyref name="ref_AnnuelReport" refer="cle_AnRp">
+			<xs:selector xpath="AnnuelObjectif"/>
+			<xs:field xpath="@yearRp"/>
+		</xs:keyref>
+	</xs:element>
 	<xs:complexType name="AnnuelObjectif">
 		<xs:sequence>
 			<xs:element name="descriptionObj" type="xs:string" minOccurs="1" maxOccurs="1"/>
@@ -19,10 +29,17 @@
 			<xs:element name="realisationRate" type="xs:int" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="titleObjectif" type="xs:string" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="yearObj" type="xs:int" minOccurs="1" maxOccurs="1"/>
-			<xs:element name="AnnuelReport" type="AnnuelReport" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="yearRp" type="xs:int" minOccurs="1" maxOccurs="1"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:element name="AnnuelReport" type="AnnuelReport"/>
+
+
+	<xs:element name="AnnuelReport" type="AnnuelReport">
+		<xs:key name="cle_AnRp">
+		<xs:selector xpath="AnnuelReport"/>
+		<xs:field xpath="@yearRp"/>
+		</xs:key>
+	</xs:element>
 	<xs:complexType name="AnnuelReport">
 		<xs:sequence>
 			<xs:element name="totalCollectedWaste" type="xs:double" minOccurs="1" maxOccurs="1"/>
@@ -31,6 +48,8 @@
 			<xs:element name="yearRp" type="xs:int" minOccurs="1" maxOccurs="1"/>
 		</xs:sequence>
 	</xs:complexType>
+
+
 	<xs:element name="Citizen" type="Citizen"/>
 	<xs:complexType name="Citizen">
 		<xs:complexContent>
@@ -41,14 +60,29 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:element name="City" type="City"/>
+
+
+	<xs:element name="City" type="City">
+		<xs:key name="cle_City">
+			<xs:selector xpath="City"/>
+			<xs:field xpath="@idcity"/>
+		</xs:key>
+	</xs:element>
 	<xs:complexType name="City">
 		<xs:sequence>
+			<xs:element name="idcity" type="xs:int"/>
 			<xs:element name="nameCity" type="xs:int" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="nbZones" type="xs:int" minOccurs="1" maxOccurs="1"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:element name="CollectAgent" type="CollectAgent"/>
+
+
+	<xs:element name="CollectAgent" type="CollectAgent">
+		<xs:keyref name="ref_TourReport" refer="cle_TourReport">
+			<xs:selector xpath="CollectAgent"/>
+			<xs:field xpath="@idTourReport"/>
+		</xs:keyref>
+	</xs:element>
 	<xs:complexType name="CollectAgent">
 		<xs:complexContent>
 			<xs:extension base="Employe">
@@ -56,12 +90,19 @@
 					<xs:element name="disponibility" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
 					<xs:element name="roleAgent" type="xs:string" minOccurs="1" maxOccurs="1"/>
 					<xs:element name="IncidentReport" type="IncidentReport" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="TourReport" type="TourReport" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="idTourReport" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:element name="CollectPoint" type="CollectPoint"/>
+
+
+	<xs:element name="CollectPoint" type="CollectPoint">
+		<xs:key name="cle_CP">
+			<xs:selector xpath="CollectPoint"/>
+			<xs:field xpath="@idCP"/>
+		</xs:key>
+	</xs:element>
 	<xs:complexType name="CollectPoint">
 		<xs:sequence>
 			<xs:element name="adressCP" type="xs:string" minOccurs="1" maxOccurs="1"/>
@@ -76,7 +117,23 @@
 			<xs:element name="wasteType" type="xs:string" minOccurs="1" maxOccurs="1"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:element name="CollectTour" type="CollectTour"/>
+
+
+
+	<xs:element name="CollectTour" type="CollectTour">
+		<xs:key name="cle_CT">
+			<xs:selector xpath="CollectTour"/>
+			<xs:field xpath="@idTour"/>
+		</xs:key>
+		<xs:keyref name="ref_ClAgent" refer="cle_User">
+			<xs:selector xpath="CollectTour"/>
+			<xs:field xpath="@idClAgent"/>
+		</xs:keyref>
+		<xs:keyref name="ref_CP" refer="cle_CP">
+			<xs:selector xpath="CollectTour"/>
+			<xs:field xpath="@idCP"/>
+		</xs:keyref>
+	</xs:element>
 	<xs:complexType name="CollectTour">
 		<xs:sequence>
 			<xs:element name="CO2emissionTour" type="xs:double" minOccurs="1" maxOccurs="1"/>
@@ -86,10 +143,12 @@
 			<xs:element name="estimedTimeTour" type="xs:string" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="idTour" type="xs:int" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="statusTour" type="xs:string" minOccurs="1" maxOccurs="1"/>
-			<xs:element name="CollectAgent" type="CollectAgent" minOccurs="1" maxOccurs="unbounded"/>
-			<xs:element name="CollectPoint" type="CollectPoint" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="idClAgent" type="xs:int" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="idCP" type="xs:int" minOccurs="1" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
+
+
 	<xs:element name="Employe" type="Employe"/>
 	<xs:complexType name="Employe" abstract="true">
 		<xs:complexContent>
@@ -102,7 +161,23 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:element name="IncidentReport" type="IncidentReport"/>
+
+
+
+	<xs:element name="IncidentReport" type="IncidentReport">
+		<xs:key name="cle_IncidentReport">
+			<xs:selector xpath="IncidentReport"/>
+			<xs:field xpath="@idIR"/>
+		</xs:key>
+		<xs:keyref name="ref_citizen" refer="cle_User">
+			<xs:selector xpath="IncidentReport"/>
+			<xs:field xpath="@idcitizen"/>
+		</xs:keyref>
+		<xs:keyref name="ref_CP2" refer="cle_CP">
+			<xs:selector xpath="IncidentReport"/>
+			<xs:field xpath="@idCP"/>
+		</xs:keyref>
+	</xs:element>
 	<xs:complexType name="IncidentReport">
 		<xs:sequence>
 			<xs:element name="adressIR" type="xs:string" minOccurs="1" maxOccurs="1"/>
@@ -111,11 +186,26 @@
 			<xs:element name="idIR" type="xs:string" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="stateIR" type="xs:string" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="typeIR" type="xs:int" minOccurs="1" maxOccurs="1"/>
-			<xs:element name="Citizen" type="Citizen" minOccurs="1" maxOccurs="1"/>
-			<xs:element name="CollectPoint" type="CollectPoint" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="idcitizen" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="idCP" type="xs:int" minOccurs="1" maxOccurs="1"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:element name="TourReport" type="TourReport"/>
+
+
+	<xs:element name="TourReport" type="TourReport">
+		<xs:key name="cle_TourReport">
+			<xs:selector xpath="TourReport"/>
+			<xs:field xpath="@idTourReport"/>
+		</xs:key>
+		<xs:keyref name="ref_AnnuelReport2" refer="cle_AnRp">
+			<xs:selector xpath="TourReport"/>
+			<xs:field xpath="@yearRp"/>
+		</xs:keyref>
+		<xs:keyref name="ref_CollectTour" refer="cle_CT">
+			<xs:selector xpath="TourReport"/>
+			<xs:field xpath="@idTour"/>
+		</xs:keyref>
+	</xs:element>
 	<xs:complexType name="TourReport">
 		<xs:sequence>
 			<xs:element name="efficacityTour" type="xs:double" minOccurs="1" maxOccurs="1"/>
@@ -123,21 +213,40 @@
 			<xs:element name="recyclingRate" type="xs:double" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="totalCollected" type="xs:double" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="totalEmission" type="xs:double" minOccurs="1" maxOccurs="1"/>
-			<xs:element name="AnnuelReport" type="AnnuelReport" minOccurs="1" maxOccurs="1"/>
-			<xs:element name="CollectTour" type="CollectTour" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="yearRp" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="idTour" type="xs:int" minOccurs="1" maxOccurs="1"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:element name="User" type="User"/>
+
+
+	<xs:element name="User" type="User">
+		<xs:key name="cle_User" >
+			<xs:selector xpath="User"/>
+			<xs:field xpath="@idUser"/>
+		</xs:key>
+	</xs:element>
 	<xs:complexType name="User" abstract="true">
 		<xs:sequence>
+			<xs:element name="idUser" type="xs:string"/>
 			<xs:element name="emailU" type="xs:string" minOccurs="1" maxOccurs="1"/>
-			<xs:element name="idU" type="xs:int" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="nameU" type="xs:int" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="pwdU" type="xs:int" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="role" type="xs:string" minOccurs="1" maxOccurs="1"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:element name="Vehicule" type="Vehicule"/>
+
+
+
+	<xs:element name="Vehicule" type="Vehicule">
+		<xs:key name="cle_Vehicule">
+			<xs:selector xpath="Vehicule"/>
+			<xs:field xpath="@immatV"/>
+		</xs:key>
+		<xs:keyref name="ref_CollectTour2" refer="cle_CT">
+			<xs:selector xpath="Vehicule"/>
+			<xs:field xpath="@idTour"/>
+		</xs:keyref>
+	</xs:element>
 	<xs:complexType name="Vehicule">
 		<xs:sequence>
 			<xs:element name="capacityV" type="xs:double" minOccurs="1" maxOccurs="1"/>
@@ -148,20 +257,37 @@
 			<xs:element name="stateV" type="xs:string" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="typeFuelV" type="xs:string" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="typeV" type="xs:string" minOccurs="1" maxOccurs="1"/>
-			<xs:element name="CollectTour" type="CollectTour" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="idTour" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:element name="Zone" type="Zone"/>
+
+
+	<xs:element name="Zone" type="Zone">
+		<xs:key name="cle_Zone">
+			<xs:selector xpath="Zone"/>
+			<xs:field xpath="@idZone"/>
+		</xs:key>
+		<xs:keyref name="ref_city" refer="cle_City">
+			<xs:selector xpath="Zone"/>
+			<xs:field xpath="@idcity"/>
+		</xs:keyref>
+		<xs:keyref name="ref_CP3" refer="cle_CP">
+			<xs:selector xpath="Zone"/>
+			<xs:field xpath="@idCP"/>
+		</xs:keyref>
+	</xs:element>
 	<xs:complexType name="Zone">
 		<xs:sequence>
 			<xs:element name="idZone" type="xs:int" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="nameZone" type="xs:int" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="nbCitizens" type="xs:int" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="superficieZone" type="xs:double" minOccurs="1" maxOccurs="1"/>
-			<xs:element name="City" type="City" minOccurs="1" maxOccurs="1"/>
-			<xs:element name="CollectPoint" type="CollectPoint" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="idcity" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="idCP" type="xs:int" minOccurs="1" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
+
+
 	<xs:element name="WasteManagement">
     		<xs:complexType>
 		        <xs:sequence>
@@ -175,4 +301,5 @@
         		</xs:sequence>
     		</xs:complexType>
 	</xs:element>
+	
 </xs:schema>
